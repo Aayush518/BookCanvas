@@ -1,0 +1,171 @@
+---
+import '../styles/book.css';
+import Introduction from './chapters/Introduction.astro';
+import Purpose from './chapters/Purpose.astro';
+import Design from './chapters/Design.astro';
+import Architecture from './chapters/Architecture.astro';
+import Implementation from './chapters/Implementation.astro';
+import Resources from './chapters/Resources.astro';
+---
+
+<div class="book-container">
+  <div class="book-wrapper">
+    <div id="book" class="book">
+      <!-- Front Cover -->
+      <div class="hard">
+        <div class="cover">
+          <h1>Understanding GFS</h1>
+          <h2>The Google File System</h2>
+          <div class="book-decoration"></div>
+          <p class="author">A Deep Dive into Distributed Storage</p>
+        </div>
+      </div>
+
+      <!-- Table of Contents -->
+      <div class="page toc-page">
+        <h2 class="toc-title">Contents</h2>
+        <ol class="toc-list">
+          <li>Introduction to GFS</li>
+          <li>Purpose and Evolution</li>
+          <li>Key Design Principles</li>
+          <li>System Architecture</li>
+          <li>Implementation Details</li>
+          <li>External Resources</li>
+        </ol>
+      </div>
+
+      <!-- Chapters -->
+      <Introduction />
+      <Purpose />
+      <Design />
+      <Architecture />
+      <Implementation />
+      <Resources />
+
+      <!-- Back Cover -->
+      <div class="hard">
+        <div class="back-cover">
+          <div class="book-decoration"></div>
+          <p class="tagline">Understanding the foundation of modern distributed storage systems</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="prev" class="control-btn">
+      <span class="arrow">←</span> Previous
+    </button>
+    <span id="page-num" class="page-number">Page 1</span>
+    <button id="next" class="control-btn">
+      Next <span class="arrow">→</span>
+    </button>
+  </div>
+</div>
+
+<script>
+document.addEventListener('astro:page-load', () => {
+  // Wait for jQuery and turn.js to be loaded
+  const checkDependencies = setInterval(() => {
+    if (typeof jQuery !== 'undefined' && jQuery.fn.turn) {
+      clearInterval(checkDependencies);
+      initializeBook();
+    }
+  }, 100);
+
+  function initializeBook() {
+    const book = jQuery('#book');
+    
+    // Calculate dimensions based on viewport
+    const calculateDimensions = () => {
+      const width = Math.min(1000, window.innerWidth - 40);
+      const height = Math.min(700, width * 0.7);
+      return { width, height };
+    };
+
+    const dimensions = calculateDimensions();
+    
+    // Initialize turn.js with proper options
+    book.turn({
+      width: dimensions.width,
+      height: dimensions.height,
+      autoCenter: true,
+      gradients: true,
+      acceleration: true,
+      elevation: 50,
+      duration: 1000,
+      pages: 8,
+      when: {
+        turning: function(e, page, view) {
+          // Play page flip sound
+          const audio = new Audio('/page-flip.mp3');
+          audio.volume = 0.3;
+          audio.play().catch(e => console.log('Audio playback failed'));
+          
+          // Update page number
+          jQuery('#page-num').text(`Page ${page}`);
+          
+          // Ensure proper page rendering
+          setTimeout(() => {
+            book.turn('size', dimensions.width, dimensions.height);
+          }, 0);
+        }
+      }
+    });
+
+    // Navigation controls
+    document.getElementById('prev')?.addEventListener('click', () => {
+      book.turn('previous');
+    });
+
+    document.getElementById('next')?.addEventListener('click', () => {
+      book.turn('next');
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') book.turn('previous');
+      if (e.key === 'ArrowRight') book.turn('next');
+    });
+
+    // Handle window resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const { width, height } = calculateDimensions();
+        book.turn('size', width, height);
+      }, 200);
+    });
+  }
+});
+</script>
+
+<style>
+.toc-page {
+  padding: 3rem;
+}
+
+.toc-title {
+  font-size: 2.2rem;
+  color: #1e3c72;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.toc-list {
+  list-style-position: inside;
+  padding: 0;
+}
+
+.toc-list li {
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.toc-list li:hover {
+  color: #1e3c72;
+}
+</style>

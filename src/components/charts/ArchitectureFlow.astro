@@ -1,0 +1,217 @@
+---
+const nodes = [
+  { id: 'master', label: 'Master Server', type: 'primary' },
+  { id: 'chunk1', label: 'Chunk Server 1', type: 'secondary' },
+  { id: 'chunk2', label: 'Chunk Server 2', type: 'secondary' },
+  { id: 'chunk3', label: 'Chunk Server 3', type: 'secondary' },
+  { id: 'client', label: 'Client', type: 'tertiary' }
+];
+
+const connections = [
+  { from: 'master', to: 'chunk1', label: 'Metadata' },
+  { from: 'master', to: 'chunk2', label: 'Metadata' },
+  { from: 'master', to: 'chunk3', label: 'Metadata' },
+  { from: 'client', to: 'master', label: 'Metadata Query' },
+  { from: 'client', to: 'chunk1', label: 'Data Transfer' },
+  { from: 'client', to: 'chunk2', label: 'Data Transfer' },
+  { from: 'client', to: 'chunk3', label: 'Data Transfer' }
+];
+---
+
+<div class="architecture-flow">
+  <div class="nodes">
+    {nodes.map(node => (
+      <div class={`node ${node.type}`} data-node-id={node.id}>
+        <div class="node-content">
+          <span class="node-icon"></span>
+          <span class="node-label">{node.label}</span>
+        </div>
+        <div class="node-pulse"></div>
+      </div>
+    ))}
+  </div>
+  <div class="connections">
+    {connections.map(conn => (
+      <div class="connection" data-from={conn.from} data-to={conn.to}>
+        <div class="connection-line">
+          <div class="connection-dot"></div>
+        </div>
+        <span class="connection-label">{conn.label}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+.architecture-flow {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.nodes {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  position: relative;
+  z-index: 2;
+}
+
+.node {
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.node-content {
+  position: relative;
+  z-index: 2;
+}
+
+.node-pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  animation: pulse 2s infinite;
+  opacity: 0;
+}
+
+.node:hover .node-pulse {
+  opacity: 0.2;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.node.primary {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: white;
+}
+
+.node.secondary {
+  background: linear-gradient(135deg, #2980b9, #3498db);
+  color: white;
+}
+
+.node.tertiary {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+}
+
+.connections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.connection {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.connection-line {
+  position: absolute;
+  height: 2px;
+  background: rgba(30, 60, 114, 0.2);
+  transform-origin: left center;
+}
+
+.connection-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #1e3c72;
+  border-radius: 50%;
+  animation: moveDot 3s infinite linear;
+}
+
+@keyframes moveDot {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.connection-label {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: #1e3c72;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .nodes {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<script>
+function initializeConnections() {
+  const connections = document.querySelectorAll('.connection');
+  
+  connections.forEach(conn => {
+    const fromNode = document.querySelector(`[data-node-id="${conn.dataset.from}"]`);
+    const toNode = document.querySelector(`[data-node-id="${conn.dataset.to}"]`);
+    
+    if (fromNode && toNode) {
+      const fromRect = fromNode.getBoundingClientRect();
+      const toRect = toNode.getBoundingClientRect();
+      const containerRect = conn.parentElement.getBoundingClientRect();
+      
+      const fromX = fromRect.left + fromRect.width/2 - containerRect.left;
+      const fromY = fromRect.top + fromRect.height/2 - containerRect.top;
+      const toX = toRect.left + toRect.width/2 - containerRect.left;
+      const toY = toRect.top + toRect.height/2 - containerRect.top;
+      
+      const length = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
+      const angle = Math.atan2(toY - fromY, toX - fromX) * 180 / Math.PI;
+      
+      const line = conn.querySelector('.connection-line');
+      line.style.width = `${length}px`;
+      line.style.left = `${fromX}px`;
+      line.style.top = `${fromY}px`;
+      line.style.transform = `rotate(${angle}deg)`;
+      
+      const label = conn.querySelector('.connection-label');
+      label.style.left = `${fromX + (toX - fromX)/2}px`;
+      label.style.top = `${fromY + (toY - fromY)/2}px`;
+    }
+  });
+}
+
+// Initialize on load and resize
+document.addEventListener('astro:page-load', () => {
+  initializeConnections();
+  window.addEventListener('resize', initializeConnections);
+});
+</script>

@@ -1,0 +1,166 @@
+---
+const chapter = {
+  number: 6,
+  title: "External Resources"
+};
+
+const academicPapers = [
+  {
+    title: "The Google File System",
+    authors: "Sanjay Ghemawat, Howard Gobioff, and Shun-Tak Leung",
+    link: "https://research.google/pubs/pub51",
+    year: 2003
+  },
+  {
+    title: "MapReduce: Simplified Data Processing on Large Clusters",
+    authors: "Jeffrey Dean and Sanjay Ghemawat",
+    link: "https://research.google/pubs/pub62",
+    year: 2004
+  }
+];
+
+const tutorials = [
+  {
+    title: "Understanding GFS Architecture",
+    platform: "MIT OpenCourseWare",
+    link: "https://ocw.mit.edu"
+  },
+  {
+    title: "Distributed Systems Concepts",
+    platform: "Coursera",
+    link: "https://www.coursera.org"
+  }
+];
+
+const implementations = [
+  {
+    name: "Hadoop Distributed File System (HDFS)",
+    description: "Open-source implementation inspired by GFS",
+    link: "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html"
+  },
+  {
+    name: "Colossus",
+    description: "Google's successor to GFS",
+    link: "https://cloud.google.com/blog/products/storage-data-transfer"
+  }
+];
+---
+
+<div class="page">
+  <h2 class="chapter-title">{chapter.number}. {chapter.title}</h2>
+
+  <div class="resources-section">
+    <h3>📚 Academic Papers</h3>
+    <div class="papers-grid">
+      {academicPapers.map(({ title, authors, link, year }) => (
+        <div class="paper-card">
+          <h4>{title}</h4>
+          <p class="authors">{authors}</p>
+          <p class="year">{year}</p>
+          <a href={link} target="_blank" rel="noopener noreferrer">Read Paper →</a>
+        </div>
+      ))}
+    </div>
+
+    <h3>🎓 Tutorials and Courses</h3>
+    <div class="tutorials-grid">
+      {tutorials.map(({ title, platform, link }) => (
+        <div class="tutorial-card">
+          <h4>{title}</h4>
+          <p class="platform">{platform}</p>
+          <a href={link} target="_blank" rel="noopener noreferrer">View Course →</a>
+        </div>
+      ))}
+    </div>
+
+    <h3>⚙️ Related Implementations</h3>
+    <div class="implementations-grid">
+      {implementations.map(({ name, description, link }) => (
+        <div class="implementation-card">
+          <h4>{name}</h4>
+          <p>{description}</p>
+          <a href={link} target="_blank" rel="noopener noreferrer">Learn More →</a>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+.resources-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.resources-section h3 {
+  color: #1e3c72;
+  margin: 1.5rem 0 1rem;
+}
+
+.papers-grid,
+.tutorials-grid,
+.implementations-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.paper-card,
+.tutorial-card,
+.implementation-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.paper-card:hover,
+.tutorial-card:hover,
+.implementation-card:hover {
+  transform: translateY(-2px);
+}
+
+.paper-card h4,
+.tutorial-card h4,
+.implementation-card h4 {
+  color: #1e3c72;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.authors,
+.platform {
+  color: #666;
+  font-style: italic;
+  margin: 0.5rem 0;
+}
+
+.year {
+  color: #1e3c72;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+a {
+  color: #1e3c72;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #2a5298;
+}
+
+@media (max-width: 768px) {
+  .papers-grid,
+  .tutorials-grid,
+  .implementations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

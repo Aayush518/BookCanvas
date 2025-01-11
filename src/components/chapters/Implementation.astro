@@ -1,0 +1,159 @@
+---
+import DataFlow from '../charts/DataFlow.astro';
+import MetricsChart from '../charts/MetricsChart.astro';
+
+const chapter = {
+  number: 5,
+  title: "Implementation Details"
+};
+
+const features = [
+  {
+    title: "Chunk Management",
+    details: [
+      "64MB chunk size",
+      "Replica placement strategy",
+      "Load balancing",
+      "Recovery mechanisms"
+    ]
+  },
+  {
+    title: "Metadata Operations",
+    details: [
+      "Namespace management",
+      "Chunk location tracking",
+      "Operation log handling",
+      "Snapshot creation"
+    ]
+  },
+  {
+    title: "Data Flow",
+    details: [
+      "Client read/write operations",
+      "Data pipeline optimization",
+      "Atomic record appends",
+      "Consistency model"
+    ]
+  }
+];
+
+const codeExamples = [
+  {
+    title: "Client Read Operation",
+    code: `
+// Example client read operation
+const chunk = await gfs.locateChunk(filename, offset);
+const data = await chunk.read(startOffset, length);
+    `
+  },
+  {
+    title: "Atomic Record Append",
+    code: `
+// Example atomic record append
+const status = await gfs.recordAppend(filename, data);
+if (status.success) {
+  console.log('Data appended at offset:', status.offset);
+}
+    `
+  }
+];
+---
+
+<div class="page">
+  <h2 class="chapter-title">{chapter.number}. {chapter.title}</h2>
+
+  <div class="features-grid">
+    {features.map(({ title, details }) => (
+      <div class="feature-card">
+        <h3>{title}</h3>
+        <ul>
+          {details.map(detail => <li>{detail}</li>)}
+        </ul>
+      </div>
+    ))}
+  </div>
+
+  <DataFlow />
+
+  <div class="code-examples">
+    <h3>💻 Code Examples</h3>
+    {codeExamples.map(({ title, code }) => (
+      <div class="code-block">
+        <h4>{title}</h4>
+        <pre><code>{code}</code></pre>
+      </div>
+    ))}
+  </div>
+
+  <MetricsChart />
+</div>
+
+<style>
+.features-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-bottom: 2rem;
+}
+
+.feature-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.feature-card h3 {
+  color: #1e3c72;
+  margin-top: 0;
+  border-bottom: 2px solid #1e3c72;
+  padding-bottom: 0.5rem;
+}
+
+.feature-card ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.feature-card li {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.feature-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #1e3c72;
+}
+
+.code-examples {
+  margin-top: 2rem;
+}
+
+.code-block {
+  margin: 1.5rem 0;
+  background: #f1f3f5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.code-block h4 {
+  margin: 0;
+  padding: 1rem;
+  background: #1e3c72;
+  color: white;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.code-block code {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+}
+</style>

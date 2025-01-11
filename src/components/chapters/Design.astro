@@ -1,0 +1,158 @@
+---
+const chapter = {
+  number: 3,
+  title: "Key Design Principles"
+};
+
+const assumptions = [
+  {
+    title: "High Component Failure Rate",
+    description: "Operates on thousands of commodity machines, making failures a normal occurrence",
+    examples: ["Hardware failures", "Network issues", "Power problems"]
+  },
+  {
+    title: "Large Files as Norm",
+    description: "Optimized for multi-GB files containing numerous application objects",
+    examples: ["Web documents", "Application logs", "Data sets"]
+  },
+  {
+    title: "Sequential Access",
+    description: "Optimized for large streaming reads and sequential writes",
+    examples: ["Batch processing", "Log analysis", "Data mining"]
+  }
+];
+---
+
+<div class="page">
+  <h2 class="chapter-title">{chapter.number}. {chapter.title}</h2>
+
+  <div class="design-grid">
+    {assumptions.map(({ title, description, examples }) => (
+      <div class="design-card">
+        <h3>{title}</h3>
+        <p>{description}</p>
+        <div class="examples">
+          <h4>Examples:</h4>
+          <ul>
+            {examples.map(example => <li>{example}</li>)}
+          </ul>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="architecture-diagram">
+    <h3>🏗️ System Architecture</h3>
+    <div class="diagram">
+      <div class="master">Master Server</div>
+      <div class="chunks">
+        <div class="chunk">Chunk Server 1</div>
+        <div class="chunk">Chunk Server 2</div>
+        <div class="chunk">Chunk Server 3</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.design-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-bottom: 2rem;
+}
+
+.design-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.design-card:hover {
+  transform: translateY(-2px);
+}
+
+.design-card h3 {
+  color: #1e3c72;
+  margin-top: 0;
+  border-bottom: 2px solid #1e3c72;
+  padding-bottom: 0.5rem;
+}
+
+.examples {
+  margin-top: 1rem;
+}
+
+.examples h4 {
+  margin: 0.5rem 0;
+  color: #2a5298;
+}
+
+.examples ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.examples li {
+  margin: 0.3rem 0;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.examples li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #1e3c72;
+}
+
+.architecture-diagram {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.master {
+  background: #1e3c72;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.chunks {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.chunk {
+  background: #e8f4f8;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  border: 2px solid #1e3c72;
+}
+
+@media (max-width: 768px) {
+  .design-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chunks {
+    flex-direction: column;
+  }
+}
+</style>

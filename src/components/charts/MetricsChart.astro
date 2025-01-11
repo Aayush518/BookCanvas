@@ -1,0 +1,152 @@
+---
+const metrics = [
+  { label: "Read Operations", value: 85, color: "#1e3c72" },
+  { label: "Write Operations", value: 60, color: "#2980b9" },
+  { label: "Metadata Operations", value: 40, color: "#27ae60" },
+  { label: "Chunk Operations", value: 75, color: "#8e44ad" }
+];
+---
+
+<div class="metrics-chart">
+  <h3>System Performance Metrics</h3>
+  <div class="chart-container">
+    {metrics.map(metric => (
+      <div class="metric" style={`--metric-color: ${metric.color}`}>
+        <div class="metric-label">{metric.label}</div>
+        <div class="metric-bar-container">
+          <div 
+            class="metric-bar" 
+            style={`--metric-value: ${metric.value}`}
+          >
+            <div class="metric-glow"></div>
+            <span class="metric-value">{metric.value}%</span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+.metrics-chart {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.metrics-chart h3 {
+  text-align: center;
+  color: #1e3c72;
+  margin-bottom: 2rem;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideIn 0.5s ease forwards;
+}
+
+.metric:nth-child(1) { animation-delay: 0.1s; }
+.metric:nth-child(2) { animation-delay: 0.2s; }
+.metric:nth-child(3) { animation-delay: 0.3s; }
+.metric:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.metric-label {
+  min-width: 150px;
+  font-weight: 500;
+  color: var(--metric-color);
+}
+
+.metric-bar-container {
+  flex: 1;
+  background: #f8f9fa;
+  height: 30px;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+}
+
+.metric-bar {
+  height: 100%;
+  width: 0;
+  background: var(--metric-color);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 1rem;
+  position: relative;
+  animation: fillBar 1.5s ease forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes fillBar {
+  to {
+    width: calc(var(--metric-value) * 1%);
+  }
+}
+
+.metric-glow {
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  to {
+    left: 150%;
+  }
+}
+
+.metric-value {
+  color: white;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .metric {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .metric-label {
+    min-width: auto;
+  }
+  
+  .metric-bar-container {
+    width: 100%;
+  }
+}
+</style>

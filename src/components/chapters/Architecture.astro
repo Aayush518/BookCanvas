@@ -1,0 +1,137 @@
+---
+import ArchitectureFlow from '../charts/ArchitectureFlow.astro';
+
+const chapter = {
+  number: 4,
+  title: "System Architecture"
+};
+
+const components = [
+  {
+    name: "Master Server",
+    description: "Manages metadata, chunk locations, and system-wide activities",
+    responsibilities: [
+      "Namespace management",
+      "Chunk lease management",
+      "Garbage collection",
+      "Chunk migration"
+    ]
+  },
+  {
+    name: "Chunk Servers",
+    description: "Store and manage actual data chunks",
+    responsibilities: [
+      "Data storage",
+      "Chunk replication",
+      "Data integrity checks",
+      "Client data transfer"
+    ]
+  },
+  {
+    name: "Clients",
+    description: "Applications that interact with GFS",
+    responsibilities: [
+      "File operations",
+      "Cache management",
+      "Interaction with master and chunk servers"
+    ]
+  }
+];
+---
+
+<div class="page">
+  <h2 class="chapter-title">{chapter.number}. {chapter.title}</h2>
+
+  <div class="architecture-overview">
+    <h3>🏗️ System Components</h3>
+    {components.map(({ name, description, responsibilities }) => (
+      <div class="component-card">
+        <h4>{name}</h4>
+        <p>{description}</p>
+        <div class="responsibilities">
+          <h5>Key Responsibilities:</h5>
+          <ul>
+            {responsibilities.map(resp => <li>{resp}</li>)}
+          </ul>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <ArchitectureFlow />
+
+  <div class="interaction-diagram">
+    <h3>🔄 Component Interactions</h3>
+    <div class="diagram-wrapper">
+      <img src="/gfs-architecture.png" alt="GFS Architecture Diagram" />
+    </div>
+  </div>
+</div>
+
+<style>
+.architecture-overview {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.component-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.component-card:hover {
+  transform: translateY(-2px);
+}
+
+.component-card h4 {
+  color: #1e3c72;
+  margin-top: 0;
+  border-bottom: 2px solid #1e3c72;
+  padding-bottom: 0.5rem;
+}
+
+.responsibilities {
+  margin-top: 1rem;
+}
+
+.responsibilities ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.responsibilities li {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.responsibilities li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #1e3c72;
+}
+
+.interaction-diagram {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.diagram-wrapper {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.diagram-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+</style>

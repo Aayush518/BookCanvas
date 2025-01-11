@@ -1,0 +1,41 @@
+---
+const chapter = {
+  number: 3,
+  title: "Core Design Principles"
+};
+---
+
+<div class="page">
+  <h2 class="chapter-title">{chapter.number}. {chapter.title}</h2>
+  <div class="chapter-content">
+    <div class="principle-box">
+      <h3>🎯 Key Design Assumptions</h3>
+      <ul>
+        <li>
+          <strong>Component Failures are Normal</strong>
+          <p>Like expecting rain in London - it's not a question of if, but when.</p>
+        </li>
+        <li>
+          <strong>Files are Huge</strong>
+          <p>Think of each file as a library rather than a single book.</p>
+        </li>
+        <li>
+          <strong>Sequential Access is Common</strong>
+          <p>Like reading a book from start to finish, rather than random page jumps.</p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="interactive-diagram">
+      <h3>🔄 System Architecture</h3>
+      <div class="diagram-content">
+        <div class="master-node">Master Server</div>
+        <div class="chunk-servers">
+          <div class="chunk">Chunk Server 1</div>
+          <div class="chunk">Chunk Server 2</div>
+          <div class="chunk">Chunk Server 3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

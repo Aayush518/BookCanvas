@@ -1,0 +1,98 @@
+---
+import MetricsChart from '../charts/MetricsChart.astro';
+
+const chapter = {
+  number: 2,
+  title: "Purpose and Evolution"
+};
+
+const timeline = [
+  { year: 2001, event: "Initial development at Google" },
+  { year: 2003, event: "First paper published" },
+  { year: 2004, event: "Widespread internal adoption" },
+  { year: 2006, event: "Influences Hadoop's HDFS development" }
+];
+
+const applications = [
+  "Search engine data processing and indexing",
+  "Large-scale log analysis",
+  "Content processing for multimedia services",
+  "Machine learning pipelines",
+  "Storage and analysis of service logs"
+];
+---
+
+<div class="page">
+  <h2 class="chapter-title">{chapter.number}. {chapter.title}</h2>
+
+  <div class="timeline-box">
+    <h3>📅 Evolution Timeline</h3>
+    <div class="timeline">
+      {timeline.map(({ year, event }) => (
+        <div class="timeline-item">
+          <span class="year">{year}</span>
+          <p>{event}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="applications-box">
+    <h3>🚀 Key Applications</h3>
+    <ul>
+      {applications.map(app => <li>{app}</li>)}
+    </ul>
+  </div>
+
+  <MetricsChart />
+
+  <div class="impact-box">
+    <h3>💫 Impact</h3>
+    <p>GFS revolutionized how Google handles massive amounts of data, forming the backbone of their storage infrastructure and inspiring a new generation of distributed storage systems.</p>
+  </div>
+</div>
+
+<style>
+.timeline {
+  margin: 2rem 0;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.year {
+  font-weight: bold;
+  color: #1e3c72;
+  min-width: 60px;
+}
+
+.applications-box ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.applications-box li {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.applications-box li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #1e3c72;
+}
+
+.impact-box {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-left: 4px solid #1e3c72;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border-radius: 0 8px 8px 0;
+}
+</style>

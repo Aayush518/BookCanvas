@@ -1,0 +1,74 @@
+---
+import ArchitectureFlow from '../charts/ArchitectureFlow.astro';
+import DataFlow from '../charts/DataFlow.astro';
+
+const chapter = {
+  number: 1,
+  title: "Introduction to GFS"
+};
+
+const highlights = [
+  "A revolutionary distributed file system that powers Google's massive data processing needs",
+  "Handles billions of search queries daily through efficient data management",
+  "Inspired modern systems like Hadoop Distributed File System (HDFS)"
+];
+
+const keyPoints = [
+  "Designed for modern data processing needs",
+  "Expects and handles regular hardware failures",
+  "Optimized for huge file sizes",
+  "Focuses on sequential data access"
+];
+---
+
+<div class="page">
+  <h2 class="chapter-title">{chapter.number}. {chapter.title}</h2>
+  
+  <div class="highlight-box">
+    <h3>🌟 Key Highlights</h3>
+    <ul>
+      {highlights.map(point => <li>{point}</li>)}
+    </ul>
+  </div>
+
+  <div class="analogy-box">
+    <h3>💡 The Library Analogy</h3>
+    <p>Think of GFS as a massive digital library where:</p>
+    <ul>
+      <li>The master server acts as the head librarian, keeping track of all book locations</li>
+      <li>Chunk servers are like shelves storing books (data) across multiple rooms</li>
+      <li>Multiple copies of popular books ensure they're always available</li>
+    </ul>
+  </div>
+
+  <ArchitectureFlow />
+
+  <div class="concept-box">
+    <h3>🎯 Core Concepts</h3>
+    <ul>
+      {keyPoints.map(point => <li>{point}</li>)}
+    </ul>
+  </div>
+
+  <DataFlow />
+</div>
+
+<style>
+.highlight-box ul, .analogy-box ul, .concept-box ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.highlight-box li, .analogy-box li, .concept-box li {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.highlight-box li:before, .analogy-box li:before, .concept-box li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #1e3c72;
+}
+</style>
